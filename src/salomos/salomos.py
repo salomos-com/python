@@ -11,7 +11,11 @@ logger = logging.getLogger(__name__)
 # Example usage
 if __name__ == "__main__":
     db_manager = DBManager("dsl_database.db")
-    processor = DSLProcessor("dsl_database.db")
+    processor = DSLProcessor(db_manager)
+
+    # Manually add example_function and ExampleModule to imported_elements
+    processor.imported_elements['example_function'] = example_function
+    processor.imported_elements['ExampleModule'] = ExampleModule
 
     # Example: Populate the database with some test data
     with db_manager.conn:

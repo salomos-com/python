@@ -2,21 +2,16 @@ import logging
 from typing import Dict, Any
 import inspect
 import re
-from .db_manager import DBManager
-from .example_module import ExampleModule
-from .example_function import example_function
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 class DSLProcessor:
-    def __init__(self, db_path: str):
-        self.db_manager = DBManager(db_path)
+    def __init__(self, db_manager):
+        self.db_manager = db_manager
         self.imported_elements = {}
         self.import_all(globals())
-        self.imported_elements['example_function'] = example_function
-        self.imported_elements['ExampleModule'] = ExampleModule
         logger.info(f"Imported elements: {self.imported_elements}")
 
     def import_all(self, global_dict):
@@ -105,6 +100,9 @@ class DSLProcessor:
             return None
 
     # Example DSL methods
+    def print(self, *args):
+        logger.info(" ".join(str(arg) for arg in args))
+
     def add(self, *args):
         return sum(float(arg) for arg in args)
 

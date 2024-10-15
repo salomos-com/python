@@ -2,6 +2,16 @@
 
 This document provides an overview of the unit tests for the `salomos.py` module, specifically for the `DSLProcessor` class.
 
+
+## Running Tests
+
+To run the unit tests, use the following command from the project root directory:
+
+```bash
+python -m unittest discover tests
+```
+
+
 ## Overview
 
 The test suite is implemented using Python's built-in `unittest` framework. The main test class is `TestDSLProcessor`, which contains various test methods to verify the functionality of the `DSLProcessor` class.
