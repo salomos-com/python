@@ -1,4 +1,5 @@
 import sqlite3
+from typing import Dict, Any
 
 class DBManager:
     def __init__(self, db_path: str):

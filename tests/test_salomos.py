@@ -1,6 +1,7 @@
 import unittest
 import sqlite3
-from src.salomos.salomos import DSLProcessor, ExampleModule
+from src.salomos.dsl_processor import DSLProcessor
+from src.salomos.example_module import ExampleModule
 
 class TestDSLProcessor(unittest.TestCase):
     def setUp(self):
@@ -11,32 +12,32 @@ class TestDSLProcessor(unittest.TestCase):
 
     def test_init_database(self):
         # Check if tables are created
-        tables = self.processor.cursor.execute("SELECT name FROM sqlite_master WHERE type='table';").fetchall()
+        tables = self.processor.db_manager.cursor.execute("SELECT name FROM sqlite_master WHERE type='table';").fetchall()
         table_names = [table[0] for table in tables]
         self.assertIn('sentences', table_names)
         self.assertIn('objects', table_names)
 
     def test_load_sentence(self):
         # Insert a test sentence
-        self.processor.cursor.execute("INSERT INTO sentences (sentence) VALUES (?)", ("test sentence",))
-        self.processor.conn.commit()
+        self.processor.db_manager.cursor.execute("INSERT INTO sentences (sentence) VALUES (?)", ("test sentence",))
+        self.processor.db_manager.conn.commit()
 
         # Test loading the sentence
-        sentence = self.processor.load_sentence()
+        sentence = self.processor.db_manager.load_sentence()
         self.assertEqual(sentence, "test sentence")
 
         # Check if the sentence is marked as processed
-        processed = self.processor.cursor.execute("SELECT processed FROM sentences WHERE sentence = ?", ("test sentence",)).fetchone()[0]
+        processed = self.processor.db_manager.cursor.execute("SELECT processed FROM sentences WHERE sentence = ?", ("test sentence",)).fetchone()[0]
         self.assertEqual(processed, 1)
 
     def test_load_objects(self):
         # Insert test objects
         test_objects = [("obj1", "'value1'"), ("obj2", "42")]
-        self.processor.cursor.executemany("INSERT INTO objects (name, value) VALUES (?, ?)", test_objects)
-        self.processor.conn.commit()
+        self.processor.db_manager.cursor.executemany("INSERT INTO objects (name, value) VALUES (?, ?)", test_objects)
+        self.processor.db_manager.conn.commit()
 
         # Test loading objects
-        objects = self.processor.load_objects()
+        objects = self.processor.db_manager.load_objects()
         self.assertEqual(objects, {"obj1": "value1", "obj2": 42})
 
     def test_resolve_class_name(self):
