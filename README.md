@@ -100,13 +100,13 @@ To run the example script from the command line:
 3. Navigate to the directory containing `salomos.py`
 4. Run the script using the command:
 
-   ```bash
+   ```
    python salomos.py
    ```
 
    Optionally, you can provide the path to a custom database file as a command-line argument:
 
-   ```bash
+   ```
    python salomos.py path/to/custom_database.db
    ```
 
@@ -115,6 +115,21 @@ To run the example script from the command line:
 The script will process the test DSL sentences from the specified database and print the results. You can modify the test data or add your own DSL sentences and objects to experiment with the package.
 
 Press `Ctrl+C` to interrupt the script and exit.
+
+## Example DSL Sentences and Executed Functions/Methods/Classes
+
+The `salomos.py` script populates the database with some test DSL sentences. Here's a table showing the example sentences and the corresponding functions, methods, or classes that are executed:
+
+| DSL Sentence                                | Executed Function/Method/Class                                 |
+|---------------------------------------------|----------------------------------------------------------------|
+| print Hello World                           | `DSLProcessor.print("Hello", "World")`                         |
+| add 5 10 15                                 | `DSLProcessor.add(5, 10, 15)`                                  |
+| Example Module greet John Doe               | `ExampleModule.greet("John", "Doe")`                           |
+| Example Module Math Operations multiply 2 3 4 | `ExampleModule.MathOperations.multiply(2, 3, 4)`               |
+| example function 10 20                      | `example_function(10, 20)`                                     |
+| concatenate Welcome to the DSL world        | `DSLProcessor.concatenate("Welcome", "to", "the", "DSL", "world")` |
+
+These example sentences demonstrate how the DSL processor interprets and executes different types of commands, including standalone functions, class methods, and module functions.
 
 ## Contributing
 

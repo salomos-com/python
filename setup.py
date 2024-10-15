@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="salomos",
-    version="0.1.9",
+    version="0.2.2",
     author="Tom Sapletta",
     author_email="info@softreck.dev", 
     description="Salomos is a Python package that provides a domain-specific language (DSL) processor for executing commands based on sentences stored in a SQLite database.",
