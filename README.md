@@ -1,6 +1,6 @@
 # Salomos
 
-Salomos is a Python package that provides utilities for creating and managing project structures.
+Salomos is a Python package that provides utilities for processing domain-specific languages (DSLs) and managing associated data.
 
 ## Installation
 
@@ -10,17 +10,33 @@ To install Salomos, simply run:
 pip install salomos
 ```
 
-## Usage
+## Key Components
 
-Salomos provides a `create_project` function that generates a standardized project structure. Here's an example of how to use it:
+### DBManager
 
-```python
-from salomos import create_project
+The `DBManager` class (`db_manager.py`) handles database operations for the Salomos package. It provides methods to:
 
-create_project("my_project", ["src", "tests", "docs"])
-```
+- Initialize the database
+- Load sentences and objects from the database
+- Close the database connection
 
-This will create a new project directory called "my_project" with the specified subdirectories.
+### DSLProcessor 
+
+The `DSLProcessor` class (`dsl_processor.py`) is responsible for processing DSL sentences. It offers functionality to:
+
+- Import modules and resolve class names
+- Find matching elements based on a name
+- Process a DSL sentence and execute corresponding actions
+- Perform operations like print, add, concatenate
+
+## Usage Examples
+
+The package also includes example modules and functions to illustrate usage:
+
+- `ExampleModule` (`example_module.py`): Contains a greeting function and sample math operations
+- `example_function` (`example_function.py`): A standalone example function
+
+Refer to these examples for basic usage patterns of the Salomos package classes and functions.
 
 ## Contributing
 
