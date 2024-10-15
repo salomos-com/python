@@ -29,14 +29,92 @@ The `DSLProcessor` class (`dsl_processor.py`) is responsible for processing DSL 
 - Process a DSL sentence and execute corresponding actions
 - Perform operations like print, add, concatenate
 
-## Usage Examples
+## Usage Example
 
-The package also includes example modules and functions to illustrate usage:
+Here's a basic example of how to use the Salomos package:
 
-- `ExampleModule` (`example_module.py`): Contains a greeting function and sample math operations
-- `example_function` (`example_function.py`): A standalone example function
+```python
+from salomos.db_manager import DBManager
+from salomos.dsl_processor import DSLProcessor
+from dotenv import load_dotenv
+import os
 
-Refer to these examples for basic usage patterns of the Salomos package classes and functions.
+load_dotenv()
+
+# Get the logger level from environment variable
+LOGGER_LEVEL = os.getenv("LOGGER_LEVEL", "INFO")
+
+# Initialize the database manager
+db = DBManager("path/to/database.db")
+db.init_database()
+
+# Create a DSL processor instance
+processor = DSLProcessor(db)
+
+# Load a DSL sentence and objects from the database
+sentence = db.load_sentence()
+objects = db.load_objects()
+
+# Process the DSL sentence
+result = processor.process_sentence(sentence, objects)
+
+# Print the result
+processor.print(result)
+
+# Close the database connection
+db.close()
+```
+
+This example demonstrates the typical workflow of using Salomos:
+
+1. Load environment variables from a `.env` file using `load_dotenv()`.
+
+2. Get the logger level from the `LOGGER_LEVEL` environment variable, defaulting to "INFO" if not set.
+
+3. Initialize a `DBManager` with the path to your database file and call `init_database()`.
+
+4. Create a `DSLProcessor` instance, passing it the database manager. 
+
+5. Load a DSL sentence and any associated objects from the database using the `load_sentence()` and `load_objects()` methods of the database manager.
+
+6. Process the loaded sentence using the `process_sentence()` method of the DSL processor, passing the sentence and objects. This returns the result of executing the sentence.
+
+7. Use the `print()` method of the DSL processor to display the result.
+
+8. Close the database connection when finished using the `close()` method of the database manager.
+
+## Running the Example Script
+
+The `salomos.py` script provides an example of how to use the Salomos package. It demonstrates:
+
+1. Creating instances of `DBManager` and `DSLProcessor`
+2. Manually adding example functions and modules to the `imported_elements` of the processor
+3. Populating the database with test data (DSL sentences and objects)
+4. Running the processor to execute the DSL sentences
+5. Handling keyboard interrupts and closing the database connection
+
+To run the example script from the command line:
+
+1. Ensure you have installed the Salomos package and its dependencies
+2. Open a terminal or command prompt
+3. Navigate to the directory containing `salomos.py`
+4. Run the script using the command:
+
+   ```bash
+   python salomos.py
+   ```
+
+   Optionally, you can provide the path to a custom database file as a command-line argument:
+
+   ```bash
+   python salomos.py path/to/custom_database.db
+   ```
+
+   If no database file is specified, it will default to "dsl_database.db" in the current directory.
+
+The script will process the test DSL sentences from the specified database and print the results. You can modify the test data or add your own DSL sentences and objects to experiment with the package.
+
+Press `Ctrl+C` to interrupt the script and exit.
 
 ## Contributing
 

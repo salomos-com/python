@@ -2,17 +2,22 @@ import logging
 from typing import Dict, Any
 import inspect
 import re
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # Set up logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+LOGGER_LEVEL = os.getenv("LOGGER_LEVEL", "INFO")
+logging.basicConfig(level=logging.getLevelName(LOGGER_LEVEL), format='%(asctime)s - %(levelname)s - %(message)s')
+LOGGER = logging.getLogger(__name__)
 
 class DSLProcessor:
     def __init__(self, db_manager):
         self.db_manager = db_manager
         self.imported_elements = {}
         self.import_all(globals())
-        logger.info(f"Imported elements: {self.imported_elements}")
+        LOGGER.info(f"Imported elements: {self.imported_elements}")
 
     def import_all(self, global_dict):
         for name, obj in global_dict.items():
@@ -29,7 +34,7 @@ class DSLProcessor:
 
     def find_matching_element(self, name: str) -> Any:
         """Find matching element in imported_elements using fuzzy matching."""
-        logger.info(f"Searching for element: {name}")
+        LOGGER.info(f"Searching for element: {name}")
         
         # First, try a direct match
         if name in self.imported_elements:
@@ -38,7 +43,7 @@ class DSLProcessor:
         # If no direct match, try CamelCase conversion
         camel_case_name = self.resolve_class_name(name)
         for key, value in self.imported_elements.items():
-            logger.info(f"Comparing with: {key}")
+            LOGGER.info(f"Comparing with: {key}")
             if key.lower() == camel_case_name.lower():
                 return value
         return None
@@ -74,7 +79,7 @@ class DSLProcessor:
         element = self.find_matching_element(' '.join(method_path))
 
         if not element:
-            logger.warning(f"Element {' '.join(method_path)} not found")
+            LOGGER.warning(f"Element {' '.join(method_path)} not found")
             return None
 
         # If the element is a class, instantiate it and navigate to the method
@@ -86,22 +91,22 @@ class DSLProcessor:
                 if hasattr(current_obj, part):
                     current_obj = getattr(current_obj, part)
                 else:
-                    logger.warning(f"Method or attribute {part} not found on {current_obj}")
+                    LOGGER.warning(f"Method or attribute {part} not found on {current_obj}")
                     return None
 
             # Call the method if it's callable
             if callable(current_obj):
                 return current_obj(*params)
             else:
-                logger.warning(f"{'.'.join(method_path)} is not callable")
+                LOGGER.warning(f"{'.'.join(method_path)} is not callable")
                 return None
         else:
-            logger.warning(f"{' '.join(method_path)} is not a class")
+            LOGGER.warning(f"{' '.join(method_path)} is not a class")
             return None
 
     # Example DSL methods
     def print(self, *args):
-        logger.info(" ".join(str(arg) for arg in args))
+        LOGGER.info(" ".join(str(arg) for arg in args))
 
     def add(self, *args):
         return sum(float(arg) for arg in args)
@@ -113,13 +118,13 @@ class DSLProcessor:
         while True:
             sentence = self.db_manager.load_sentence()
             if not sentence:
-                logger.info("No more sentences to process")
+                LOGGER.info("No more sentences to process")
                 break
 
             objects = self.db_manager.load_objects()
             result = self.process_sentence(sentence, objects)
-            logger.info(f"Processed: {sentence}")
-            logger.info(f"Result: {result}")
+            LOGGER.info(f"Processed: {sentence}")
+            LOGGER.info(f"Result: {result}")
 
             time.sleep(1)  # Wait for 1 second before processing the next sentence
 

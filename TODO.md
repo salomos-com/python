@@ -1,6 +1,8 @@
 # TODO
 
 - add sentences to DB and connect with
+- all variables in the source code on the top of file with Bapitalized letters and with import them from .env file
+- use .env file for configuration
 
 voco.chat
 simply modular interfaces 

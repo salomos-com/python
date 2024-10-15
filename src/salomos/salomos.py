@@ -3,10 +3,15 @@ from .db_manager import DBManager
 from .dsl_processor import DSLProcessor
 from .example_module import ExampleModule
 from .example_function import example_function
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # Set up logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+LOGGER_LEVEL = os.getenv("LOGGER_LEVEL", "INFO")
+logging.basicConfig(level=logging.getLevelName(LOGGER_LEVEL), format='%(asctime)s - %(levelname)s - %(message)s')
+LOGGER = logging.getLogger(__name__)
 
 # Example usage
 if __name__ == "__main__":
@@ -36,6 +41,6 @@ if __name__ == "__main__":
     try:
         processor.run()
     except KeyboardInterrupt:
-        logger.info("Process interrupted by user")
+        LOGGER.info("Process interrupted by user")
     finally:
         processor.close()
